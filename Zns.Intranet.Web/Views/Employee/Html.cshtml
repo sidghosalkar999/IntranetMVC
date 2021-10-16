@@ -1,0 +1,40 @@
+﻿@using Zns.Intranet.Web.Controllers
+@model HtmlHelperModel
+@{
+    ViewBag.Title = "Html";
+}
+
+<h2>Html</h2>
+@Html.BeginForm()
+{
+@Html.ActionLink("List Employee", "Index")
+<br />
+
+@Html.LabelFor(model => model.Details) : @Html.TextAreaFor(model => model.Details)
+
+@Html.LabelFor(model => model.Details) : @Html.PasswordFor(model => model.Details)
+<br />
+@Html.HiddenFor(model => model.Id)
+
+@{
+    foreach (var item in @ViewBag.Date)
+    {
+        <label>@item</label>
+    }
+}
+
+@Html.LabelFor(model => model.Id) : @Html.TextBoxFor(model => model.Id)
+<br />
+
+@Html.LabelFor(model => model.IsActive) : @Html.TextAreaFor(model => model.IsActive)
+<br />
+
+@Html.LabelFor(model => model.mood)
+<br /><nbsp></nbsp>
+@Html.Label("Happy") : @Html.RadioButtonFor(model => model.mood, "Happy")
+@Html.Label("Not Happy") : @Html.RadioButtonFor(model => model.mood, "Not Happy")
+@Html.Label("Don't know") : @Html.RadioButtonFor(model => model.mood, "Don't Know")
+<br />
+@Html.LabelFor(model => model.IsActive) : @Html.CheckBoxFor(model => model.IsActive)
+<input type="submit" value="Save" />
+}
