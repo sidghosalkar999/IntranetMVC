@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Zns.Intranet.Web.Models
 {
-    public class DbContextZns : System.Data.Entity.DbContext
+    public class SidContext : DbContext
     {
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -15,13 +15,10 @@ namespace Zns.Intranet.Web.Models
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
     
-        public DbContextZns() : base("name=DbContext")
+        public SidContext() : base("name=SidContext")
         {
         }
 
         public System.Data.Entity.DbSet<Zns.Intranet.Web.Models.Employee> Employees { get; set; }
-        public System.Data.Entity.DbSet<Zns.Intranet.Web.Models.Department> Departments { get; set; }
-        public System.Data.Entity.DbSet<Zns.Intranet.Web.Models.User> Users { get; set; }
-
     }
 }

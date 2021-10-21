@@ -1,9 +1,6 @@
 ﻿using System;
-using log4net;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Data;
-using System.IO;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -13,35 +10,19 @@ using Zns.Intranet.Web.Models;
 
 namespace Zns.Intranet.Web.Controllers
 {
-    //[HandleError(ExceptionType = typeof(OutOfMemoryException), View = "~/Views/Error/DBError.cshtml")]
-    public class ZnsEmployeesController : Controller
+    public class employeeeeController : Controller
     {
-        private DbContextZns db = new DbContextZns();
-        ILog log = log4net.LogManager.GetLogger("ZnsEmployeesController");
+        private SidContext db = new SidContext();
 
-        // GET: ZnsEmployees
+        // GET: employeeee
         public ActionResult Index()
-         {
-            //throw new FileNotFoundException();
-            var employees = db.Employees.Include(e => e.FieldExperience);
-            return View(employees.ToList());
-
-            try
-            {
-                log.Error("Something went wrong when listing employee");
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception)
-            {
-               
-
-            }
+        {
+            return View(db.Employees.ToList());
         }
 
-        // GET: ZnsEmployees/Details/5
+        // GET: employeeee/Details/5
         public ActionResult Details(int? id)
         {
-            Debug.WriteLine("Trying to get employees Information");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -54,38 +35,32 @@ namespace Zns.Intranet.Web.Controllers
             return View(employee);
         }
 
-        // GET: ZnsEmployees/Create
+        // GET: employeeee/Create
         public ActionResult Create()
         {
-            Debug.WriteLine("Trying to create employees");
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name");
             return View();
         }
 
-        // POST: ZnsEmployees/Create
+        // POST: employeeee/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,FieldExperience,PhoneNumber,Salary,BirthDate")] Employee employee)
         {
-            Debug.WriteLine("Trying to create new Employee");
             if (ModelState.IsValid)
             {
-                Debug.WriteLine("Trying to create new Employee");
                 db.Employees.Add(employee);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.DepartmentId = new SelectList(db.Departments, "Id", "Name", employee.FieldExperience);
             return View(employee);
         }
 
-        // GET: ZnsEmployees/Edit/5
+        // GET: employeeee/Edit/5
         public ActionResult Edit(int? id)
         {
-            Debug.WriteLine("Trying to edit employees {id}");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -98,7 +73,7 @@ namespace Zns.Intranet.Web.Controllers
             return View(employee);
         }
 
-        // POST: ZnsEmployees/Edit/5
+        // POST: employeeee/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -114,10 +89,9 @@ namespace Zns.Intranet.Web.Controllers
             return View(employee);
         }
 
-        // GET: ZnsEmployees/Delete/5
+        // GET: employeeee/Delete/5
         public ActionResult Delete(int? id)
         {
-            Debug.WriteLine("Trying to Delete employees {id}");
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -130,7 +104,7 @@ namespace Zns.Intranet.Web.Controllers
             return View(employee);
         }
 
-        // POST: ZnsEmployees/Delete/5
+        // POST: employeeee/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
@@ -149,12 +123,5 @@ namespace Zns.Intranet.Web.Controllers
             }
             base.Dispose(disposing);
         }
-        /*protected override void OnException(ExceptionContext filterContext)
-        {
-            filterContext.ExceptionHandled = true;
-            log.Error("Something Went Wrong");
-            filterContext.Result = new ViewResult { ViewName = "~/Views/Error/InternalError.cshtml" };
-                //RedirectToAction("Index", "Home");
-        }*/
     }
 }

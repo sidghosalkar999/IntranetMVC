@@ -1,16 +1,21 @@
 ﻿using System;
+using log4net;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using Zns.Intranet.Web.Filters;
 using Zns.Intranet.Web.Models;
 
 namespace Zns.Intranet.Web.Controllers
 {
+    [LogAttribute]
     public class EmployeeController : Controller
     {
+        ILog log = log4net.LogManager.GetLogger("EmployeeController");
 
         static List<Employee> empList = new List<Employee>()
             {
@@ -44,21 +49,25 @@ namespace Zns.Intranet.Web.Controllers
         {
             return File(AppDomain.CurrentDomain.BaseDirectory + "Content/aadhar card.pdf", "application/pdf");
         }
+        [OutputCache(Duration = 10)]
         public ActionResult Index()
         {
+            //log.Info("Trying to list down Employee");
             empList.OrderBy(e => e.Name);
             return View(empList);
         }
-
+        [LogAttribute]
         [HttpGet]
         public ActionResult Create()
         {
+            //log.Info("Trying to create new Employee");
             return View();
         }
 
         [HttpPost]
         public ActionResult Create(Employee emp)
         {
+            //log.Info("Trying to create new Employee");
             empList.Add(emp);
             return RedirectToAction("Index");
         }
@@ -67,6 +76,10 @@ namespace Zns.Intranet.Web.Controllers
         [HttpGet]
         public ActionResult Details(int id)
         {
+            //log.Info("Trying to get details of Employee");
+            //log.Error("Trying to get details of Employee");
+            //log.Warn("Trying to get details of Employee");
+            //log.Debug("Trying to get details of Employee");
             //Get Record from DB
             var model = empList.Where(x => x.Id == id).FirstOrDefault();
             return View(model);
@@ -101,9 +114,7 @@ namespace Zns.Intranet.Web.Controllers
             empList.OrderBy(e => e.Name);
 
             return RedirectToAction("Index");
-
-
-        }
+      }
 
         [HttpGet]
         public ActionResult Html()
